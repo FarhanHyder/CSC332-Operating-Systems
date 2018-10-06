@@ -1,0 +1,28 @@
+Farhan Hyder
+CSC 332 Lab - Task 2
+Date: 10/05/2018
+
+
+    In this program, the parent P forks the process Q. Then process Q (new parent) forks process R. In this part of the assignment, we are asked run the program and then interpret the output.
+
+    We can observe the program using the values of a and b. 
+    Inside parent P:
+        Values of all states derived from this process: a=10, b=25.
+        Parent P has two states:    
+            P#1: - forks child Q.
+                 - updated values will be: a=35, b=25 
+            P#2: - without any child alive
+                 - updated values will be: a=10, b=30
+
+    Inside parent Q:
+        Process Q initially has all the values of it's parent P. Which is a=10, b=25.
+        However, it updates the values right after.
+        New values of a,b: a=35, b=25. Now, values of all states/processes derived from parent Q will hold this values of a, anb b.
+        Parent P has two states:   
+            Q#1:  - forks child R
+                  - updated values will be: a=905, b=25
+            Q#2:  - without any child alive
+                  - updated values will be: a=35, b=45
+
+
+    The purpose of this lab is to observe- how the child processes inherit the variable(and could be much more) from the parent processes. Also, its notable that the child inherit the values of their parent (inherits directly), not grandparents (inherits indirectly).
