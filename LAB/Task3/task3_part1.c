@@ -7,6 +7,8 @@
 
 #include <unistd.h>    //execl
 #include <stdio.h>     //printf
+#include <sys/types.h> //waitpid
+#include <sys/wait.h>  //waitpid
 
 
 int main(int argc, char *argv[])
@@ -21,4 +23,6 @@ int main(int argc, char *argv[])
         execl("/bin/date", argv[0],NULL);
     }
     
+    waitpid(child,NULL,0);  //wait for child to die :(
+
 }
