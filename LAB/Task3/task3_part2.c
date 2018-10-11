@@ -17,7 +17,8 @@ int main(int argc, char *argv[])
     //child stuffs
     {
         printf("Child PID #[%d]\n",getpid());
-        execvp("ls -l", &argv[0]);
+        char *argv[] = {"ls","-l",NULL};    //'-l' is the extended param with 'l' 
+        execvp(argv[0],argv);   //executes as "ls -l"
     }
 
     waitpid(child,NULL,0);  //wait for child to die :(
