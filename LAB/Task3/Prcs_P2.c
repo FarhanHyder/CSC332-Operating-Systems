@@ -1,5 +1,6 @@
 /*  task3 : part #3 : child 2
     author: Farhan Hyder
+    submission date: 10/12/2018
 */
 
 #include <stdio.h>      //printf
@@ -87,6 +88,8 @@ int main(int argc, char const *argv[])
         }
        
     }while(b >= MIN_BUFFER);
+
+    //printf("Success copying data to [%d] and [%d] from [%d]",DESTINATION_1_PATH,DESTINATION_2_PATH,SOURCE_PATH);
     
     return 0;
 }

@@ -1,6 +1,6 @@
 /*  task3 : part #1
     author: Farhan Hyder
-    submission date: 10/11/2018
+    submission date: 10/12/2018
     description: 
 		- creates a child that executes a command which tells time and date in Unix
 */

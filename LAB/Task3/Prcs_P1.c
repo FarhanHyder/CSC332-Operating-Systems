@@ -1,5 +1,6 @@
 /*  task3 : part #3 : child 1
     author: Farhan Hyder
+    submission date: 10/12/2018
 */
 
 #include <stdio.h>      //printf      
@@ -32,7 +33,7 @@ int main(int argc, char const *argv[])
 
     }
 
-    printf("\nSuccess on creating and opening both destination files.\n");
+    //printf("\nSuccess on creating and opening both destination files.\n");
 
     return 0;
 }
