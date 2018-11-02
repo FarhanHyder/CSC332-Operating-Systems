@@ -1,3 +1,8 @@
+/*  task4 : #2
+    author: Farhan Hyder
+    submission date: 11/02/2018
+*/
+
 #include<string.h>      //various string operations
 #include<stdio.h>       //fork(),fscanf()
 #include<errno.h>       //errno
