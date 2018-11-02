@@ -1,13 +1,9 @@
-#include<stdio.h>
-#include<unistd.h>
-#include<sys/types.h>
-#include<sys/stat.h>
-#include<fcntl.h>
-#include<string.h>
-#include<errno.h>
-#include<stdlib.h>
-#include<sys/wait.h>
-#include <string.h>
+#include<string.h>      //various string operations
+#include<stdio.h>       //fork(),fscanf()
+#include<errno.h>       //errno
+#include<unistd.h>      //F_OK,R_OK    
+#include<stdlib.h>      //exit()
+#include<sys/wait.h>    //wait()
 
 int main(int argc, char* argv[])
 {
@@ -17,13 +13,9 @@ int main(int argc, char* argv[])
     int x=2, y=2;  
     int row_n=0, col_n=0, worker_n = 0;
     double grade_total_temp; 
-
     int status, returnval;
     char* SOURCE_FILEPATH = "quiz_grades.txt";
-
     pid_t manager, worker;
-
-
     double grades[x*y][n_students];
 
 // Check file existence 
@@ -47,8 +39,6 @@ int main(int argc, char* argv[])
     }
 
     errno = 0;
-
-
     FILE *fd=fopen(SOURCE_FILEPATH,"r");
 
     while(row_n <= n_students-1)
