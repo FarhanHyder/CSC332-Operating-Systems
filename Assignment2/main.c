@@ -1,7 +1,7 @@
 /*
 author: Farhan Hyder
 CSC 332 - Assignment 2
-Date: 11/11/2018
+Date: 11/12/2018
 */
 
 #include <stdio.h>		//FILE, size_t, fopen()
@@ -11,6 +11,7 @@ Date: 11/11/2018
 #define DATA_FILE "datafile.dat"
 #define ANSWER_FILE "ans.dat"
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;	//initialize mutex
+//other files must be named in new#.dat format. For example: new1.dat, new2.dat, new3.dat
 
 typedef struct node {
     int val;
