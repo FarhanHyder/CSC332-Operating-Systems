@@ -31,7 +31,8 @@ void compare_lists(list_t *, list_t *);
 int main()
 {
 	int NUM_OF_THREADS = 3;
-	int returnval, t;
+	int returnval;
+	size_t t;
 	pthread_t thread[NUM_OF_THREADS];
 	pthread_attr_t attr;
 	void *status;
@@ -129,9 +130,9 @@ list_t *read_file(char *filepath)
 
 void *thread_job(void *t)
 {
-	int index = (int)t + 1;
+	size_t index = (size_t)t + 1;
 	char filename[50];
-	sprintf(filename, "new%d.dat", index);
+	sprintf(filename, "new%ld.dat", index);
 
 	list_t *current_list = read_file(filename);	//current thread's list
 	pthread_mutex_lock(&mutex);	//create critical region
