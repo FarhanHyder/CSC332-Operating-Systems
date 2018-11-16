@@ -1,11 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "sem2.h"
+
+#include <unistd.h>		//fork, getpid
+#include <sys/types.h>	//wait, fork, getpid
+#include <sys/wait.h>	//wait
+
 
 #define CHILD      			0  			/* Return value of child proc from fork call */
 #define TRUE       			0  
 #define FALSE      			1
+#define PERMS			    0666 		/* 0666 - To grant read and write permissions */
 
-FILE *fp1, *fp2, *fp3, *fp4;			/* File Pointers */
+FILE *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp7;			/* File Pointers */
+int sem;								/* Semaphore */
 
 main()
 {
@@ -16,6 +24,17 @@ main()
 	int status;						// Exit status of child process
 	int bal1, bal2;					// Balance read by processes
 	int flag, flag1;				// End of loop variables
+
+	int counter_dad, counter_son1, counter_son2;			/* counter variables */
+
+	//Semaphore creation
+	if((sem=semget(IPC_PRIVATE,1,PERMS | IPC_CREAT)) == -1)
+	{
+		printf("\n can't create semaphore");
+		exit(1);
+	}
+
+	sem_create(sem,1);
 	
 	//Initialize the file balance to be $100
 	fp1 = fopen("balance","w");
@@ -28,6 +47,24 @@ main()
 	N_Att = 20;
 	fprintf(fp4, "%d\n", N_Att);
 	fclose(fp4);
+
+
+	// Initialize counter variables
+	fp5 = fopen("counter_dad", "w");		//dad
+	counter_dad = 0;
+	fprintf(fp5, "%d\n", counter_dad);
+	fclose(fp5);
+
+	fp6 = fopen("counter_son1", "w");		//son1 
+	counter_son1 = 0;
+	fprintf(fp6, "%d\n", counter_son1);
+	fclose(fp6);
+
+	fp7 = fopen("counter_son2", "w");		//son2
+	counter_son2 = 0;
+	fprintf(fp7, "%d\n", counter_son2);
+	fclose(fp7);
+
 	
 	//Create child processes that will do the updates
 		if ((pid = fork()) == -1) 
@@ -43,6 +80,24 @@ main()
 		N=5;
 		for(i=1;i<=N; i++)
 		{
+			P(sem);	//entering critical section
+			
+			// update son1
+			fp6 = fopen("counter_son1","r+");
+			fscanf(fp6,"%d",&counter_son1);
+			fseek(fp6,0L,0);
+			counter_son1++;
+			fprintf(fp6, "%d\n", counter_son1);
+			fclose(fp6);
+
+			//update son2
+			fp7 = fopen("counter_son2","r+");
+			fscanf(fp7,"%d",&counter_son2);
+			fseek(fp7,0L,0);
+			counter_son2++;
+			fprintf(fp7, "%d\n", counter_son2);
+			fclose(fp7);
+
 			printf("Dear old dad is trying to do update.\n");
 			fp1 = fopen("balance", "r+");
 			fscanf(fp1, "%d", &bal2);
@@ -58,6 +113,8 @@ main()
 
 			printf("Dear old dad is done doing update. \n");
 			sleep(rand()%5);	/* Go have coffee for 0-4 sec. */
+
+			V(sem);		//exit from critical section
 		}
 	}
 	
