@@ -13,3 +13,12 @@ Lab 5:
 - bank.c
 	- $ gcc bank.c -o bank
 	- $ ./bank
+	
+	output file after running the code: 
+		- attempt
+		- balance
+		- bank
+		- counter_dad
+		- counter_son1
+		- counter_son2
+
