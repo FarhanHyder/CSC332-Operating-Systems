@@ -15,7 +15,7 @@
 FILE *fp1, *fp2, *fp3, *fp4, *fp5, *fp6, *fp7;			/* File Pointers */
 int sem;								/* Semaphore */
 
-main()
+int main()
 {
 	int pid;						// Process ID after fork call
 	int i;							// Loop index
@@ -134,6 +134,24 @@ main()
 			flag = FALSE;
 			while(flag == FALSE) 
 			{
+				P(sem);		//entering critical section
+
+				//update dad
+				fp5 = fopen("counter_dad","r+");
+				fscanf(fp5,"%d",&counter_dad);
+				fseek(fp5,0L,0);
+				counter_dad++;
+				fprintf(fp5, "%d\n", counter_dad);
+				fclose(fp5);
+
+				//update son2
+				fp7 = fopen("counter_son2","r+");
+				fscanf(fp7,"%d",&counter_son2);
+				fseek(fp7,0L,0);
+				counter_son2++;
+				fprintf(fp7, "%d\n", counter_son2);
+				fclose(fp7);
+
 				fp3 = fopen("attempt" , "r+");
 				fscanf(fp3, "%d", &N_Att);
 				if(N_Att == 0)
@@ -167,6 +185,9 @@ main()
 						fclose(fp3);
 					}
 				}
+
+				V(sem);			//exit from critical section
+
 			}
 		}
 		else
@@ -185,6 +206,24 @@ main()
 				flag1 = FALSE;
 				while(flag1 == FALSE) 
 				{
+					P(sem);		//entering critical section
+
+					//update dad
+					fp5 = fopen("counter_dad","r+");
+					fscanf(fp5,"%d",&counter_dad);
+					fseek(fp5,0L,0);
+					counter_dad++;
+					fprintf(fp5, "%d\n", counter_dad);
+					fclose(fp5);
+
+					//update son1
+					fp6 = fopen("counter_son1","r+");
+					fscanf(fp6,"%d",&counter_son1);
+					fseek(fp6,0L,0);
+					counter_son1++;
+					fprintf(fp6, "%d\n", counter_son1);
+					fclose(fp6);
+
 					fp3 = fopen("attempt" , "r+");
 					fscanf(fp3, "%d", &N_Att);
 					if(N_Att == 0)
@@ -219,6 +258,8 @@ main()
 							fclose(fp3);
 						}
 					}
+
+					V(sem);		//exit from critical section
 				}
 			}
 			else
@@ -226,12 +267,24 @@ main()
 				//Now parent process waits for the child processes to finish
 				pid = wait(&status);
 				printf("Process(pid = %d) exited with the status %d. \n", pid, status);
-			
+
+				fp5 = fopen("counter_dad","r+");
+				fscanf(fp5,"%d",&counter_dad);
+				printf("\nDad total wait counter = [%d]\n\n",counter_dad);
+
 				pid = wait(&status);
 				printf("Process(pid = %d) exited with the status %d. \n", pid, status);
-			
+
+				fp6 = fopen("counter_son1","r+");
+				fscanf(fp6,"%d",&counter_son1);
+				printf("\nSon-1 total wait counter = [%d]\n\n",counter_son1);
+
 				pid = wait(&status);
 				printf("Process(pid = %d) exited with the status %d. \n", pid, status);
+
+				fp7 = fopen("counter_son2","r+");
+				fscanf(fp7,"%d",&counter_son2);
+				printf("Son-2 total wait counter = [%d]\n\n",counter_son2);
 			}
 			exit(0);
 		}
