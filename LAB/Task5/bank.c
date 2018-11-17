@@ -1,7 +1,13 @@
+/*  task5
+    author: Farhan Hyder
+    submission date: 11/16/2018
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "sem2.h"
 
+#include "sem2.h"		//semaphore
 #include <unistd.h>		//fork, getpid
 #include <sys/types.h>	//wait, fork, getpid
 #include <sys/wait.h>	//wait
