@@ -11,3 +11,5 @@ Intro in threads:
 Lab 5:
 - Dad-Son Problem.pdf
 - bank.c
+	- $ gcc bank.c -o bank
+	- $ ./bank
