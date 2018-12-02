@@ -1,6 +1,6 @@
 /*  task5
     author: Farhan Hyder
-    submission date: 11/16/2018
+    submission date: 12/03/2018
 */
 
 #include <stdio.h>
@@ -16,14 +16,12 @@
 
 int get_rand(int start, int end);   /* generates a random number between [start,end] range */
 
-
 int main()
 {
-    //int agent, smoker1, smoker2, smoker3;
-    pid_t smoker1, smoker2, smoker3;
     int smoker_match, smoker_paper, smoker_tobacco, agent, lock;   /*semaphore variables*/
+    pid_t smoker1, smoker2, smoker3;
 
-    /* semaphore creation [start]*/
+ /* semaphore creation [start]*/
     if((smoker_match=semget(IPC_PRIVATE,1,PERMS | IPC_CREAT)) == -1)
     {
         printf("\n can't create smoker_match semaphore");
@@ -67,42 +65,11 @@ int main()
     /* start main program */
 
     /* smokers [start] */
-    if (smoker1 = fork()) //smoker-1
+    smoker1=fork();
+    if(smoker1==0)
     {
         int counter = 0;
-        while (counter<FOREVER)
-        {
-            P(smoker_match);    //sleep right away
-            P(lock);
-            printf("[smoker-1] Pick up paper \n");
-            printf("[smoker-1] Pick up tobacco \n");
-            V(agent);
-            V(lock);
-            printf("[smoker-1] Smoke (but dont inhale) \n");
-            counter ++;
-        }
-    }
-
-    if (smoker2 = fork()) //smoker-2
-    {
-        int counter = 0;
-        while (counter<FOREVER)
-        {
-            P(smoker_paper);    //sleep right away
-            P(lock);
-            printf("[smoker-2] Pick up match \n");
-            printf("[smoker-2] Pick up tobacco \n");
-            V(agent);
-            V(lock);
-            printf("[smoker-2] Smoke (but dont inhale) \n");
-            counter ++;
-        }
-    }
-
-        if (smoker3 = fork()) //smoker-3
-    {
-        int counter = 0;
-        while (counter<FOREVER)
+        while (counter<FOREVER || counter < 0)
         {
             P(smoker_tobacco);    //sleep right away
             P(lock);
@@ -111,21 +78,60 @@ int main()
             V(agent);
             V(lock);
             printf("[smoker-3] Smoke (but dont inhale) \n");
+            sleep(1);
             counter ++;
         }
     }
-    /* smokers [end] */
 
-    /* agen [start] */
+    smoker2=fork();
+    if(smoker2==0)
+    {
+        int counter = 0;
+        while (counter<FOREVER || counter < 0)
+        {
+            P(smoker_match);    //sleep right away
+            P(lock);
+            printf("[smoker-1] Pick up paper \n");
+            printf("[smoker-1] Pick up tobacco \n");
+            V(agent);
+            V(lock);
+            printf("[smoker-1] Smoke (but dont inhale) \n");
+            sleep(1);
+            counter ++;
+        }
+    }
+
+
+
+    smoker3=fork();
+    if(smoker3==0)
+    {
+        int counter = 0;
+        while (counter<FOREVER || counter < 0)
+        {
+            P(smoker_paper);    //sleep right away
+            P(lock);
+            printf("[smoker-2] Pick up match \n");
+            printf("[smoker-2] Pick up tobacco \n");
+            V(agent);
+            V(lock);
+            printf("[smoker-2] Smoke (but dont inhale) \n");
+            sleep(1);
+            counter ++;
+        }
+    }
+
+
+    /* agent [start] */
     time_t t;
     srand((unsigned) time(&t));
     int counter = 0, randNum;
 
-    while (counter<FOREVER)
+    while (counter<FOREVER || counter < 0)
     {
         P(lock);
         randNum = get_rand(1,3);
-        printf("\n [new round] \n");
+        printf("\n");
         if (randNum == 1)
         {
             printf("[agent] Put tobacco on table \n");
@@ -148,14 +154,15 @@ int main()
 
         V(lock);
         P(agent);   //agent sleeps
+        counter++;
     }  //end forever loop  
 
-    /* agen [end] */
+    /* agent [end] */
 
 
-    kill(smoker1,SIGKILL);
-    kill(smoker2,SIGKILL);
-    kill(smoker3,SIGKILL);
+    kill(smoker1, SIGKILL);
+    kill(smoker2, SIGKILL);
+    kill(smoker3, SIGKILL);
     printf("\nThat's a lot of smoking for the day. Business closed! \n");
 
     return 0;
