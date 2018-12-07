@@ -12,7 +12,7 @@
 #include <sys/wait.h>	//kill, SIGKILL
 
 #define PERMS 0666 		/* 0666 - To grant read and write permissions */
-#define FOREVER 10      /* set this to -1 for an infinite loop */
+#define FOREVER 10      /* loop limit */
 
 int get_rand(int start, int end);   /* generates a random number between [start,end] range */
 
@@ -69,7 +69,7 @@ int main()
     if(smoker1==0)
     {
         int counter = 0;
-        while (counter<FOREVER || counter < 0)
+        while (counter<FOREVER)
         {
             P(smoker_tobacco);    //sleep right away
             P(lock);
@@ -87,7 +87,7 @@ int main()
     if(smoker2==0)
     {
         int counter = 0;
-        while (counter<FOREVER || counter < 0)
+        while (counter<FOREVER)
         {
             P(smoker_match);    //sleep right away
             P(lock);
@@ -101,13 +101,11 @@ int main()
         }
     }
 
-
-
     smoker3=fork();
     if(smoker3==0)
     {
         int counter = 0;
-        while (counter<FOREVER || counter < 0)
+        while (counter<FOREVER)
         {
             P(smoker_paper);    //sleep right away
             P(lock);
@@ -127,7 +125,7 @@ int main()
     srand((unsigned) time(&t));
     int counter = 0, randNum;
 
-    while (counter<FOREVER || counter < 0)
+    while (counter<FOREVER)
     {
         P(lock);
         randNum = get_rand(1,3);
