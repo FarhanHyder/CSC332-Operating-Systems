@@ -3,14 +3,14 @@
     submission date: 12/03/2018
 */
 
-#include<unistd.h>
-#include<sys/types.h>
-#include<sys/wait.h>
-#include<stdio.h>
-#include<stdlib.h>
-#include<time.h>
-#include<signal.h>
-#include<pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include<time.h>        //time for rand generator
+#include "sem.h"		//semaphore
+#include <unistd.h>		//fork
+#include <sys/types.h>	//kill
+#include <sys/wait.h>	//kill, SIGKILL
+#include<pthread.h>     //pthread lib
 
 #define FOREVER 10      /* loop limit */
 pthread_mutex_t lock=PTHREAD_MUTEX_INITIALIZER;
@@ -26,26 +26,26 @@ void *smoker_fn(void*);
 void main()
 {
     pthread_t agent_thread, smoker1, smoker2, smoker3;
-    /* mutex variables */
+
+    /* init mutex variables */
     pthread_mutex_init(&lock,NULL);
-    pthread_mutex_unlock(&lock);
     pthread_mutex_init(&smoker_match,NULL);
-    pthread_mutex_lock(&smoker_match);
     pthread_mutex_init(&smoker_paper,NULL);
-    pthread_mutex_lock(&smoker_paper);
     pthread_mutex_init(&smoker_tobacco,NULL);
-    pthread_mutex_lock(&smoker_tobacco);
     pthread_mutex_init(&agent,NULL);
+    
+    /* everything but lock should be locked */
+    pthread_mutex_unlock(&lock);
+    pthread_mutex_lock(&smoker_match);
+    pthread_mutex_lock(&smoker_paper);
+    pthread_mutex_lock(&smoker_tobacco);
     pthread_mutex_lock(&agent);
-    /* mutex variables */
 
     pthread_create(&agent_thread,NULL, &agent_fn,NULL);
     pthread_create(&smoker1,NULL, smoker_fn,(void*)1);
     pthread_create(&smoker2,NULL, smoker_fn,(void*)2);
     pthread_create(&smoker3,NULL, smoker_fn,(void*)3);
 
-
-  //wait for other threads before terminating the program
    pthread_join(agent_thread, NULL);
    pthread_kill(smoker1,SIGTERM);
    pthread_kill(smoker2,SIGTERM);
