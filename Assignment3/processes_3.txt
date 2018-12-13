@@ -1,0 +1,15 @@
+arrival_time,proc,id,state,priority,interruptable,est_tot_time,est_remain_time
+10,cat,1000,ready,7,0,360,360
+70,sort,1001,ready,8,0,320,320
+101,head,1002,ready,3,0,430,430
+120,ping,1003,ready,4,0,411,411
+127,stat,1004,ready,1,0,310,310
+135,grep,1005,ready,2,0,400,400
+141,fuser,1006,ready,4,0,550,550
+152,lsof,1000,ready,5,0,301,301
+172,rsync,1001,ready,7,0,620,620
+181,chmod,1002,ready,3,0,230,230
+197,kill,1003,ready,1,0,311,311
+203,ifconfig,1004,ready,1,0,260,260
+221,netstat,1005,ready,2,0,440,440
+232,curl,1006,ready,7,0,510,510
