@@ -1,0 +1,16 @@
+Song Name	Duration in seconds
+Song 1	5
+Song 2	4
+Song 3	10
+Song 4	4
+Song 5	3
+Song 6	8
+Song 7	10
+Song 8	6
+Song 9	2
+Song 10	7
+Song 11	8
+Song 12	5
+Song 13	4
+Song 14	4
+Song 15	10
