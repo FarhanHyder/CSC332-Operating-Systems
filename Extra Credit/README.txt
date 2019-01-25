@@ -8,3 +8,6 @@ Controls:
 next: go to next song
 previous: go to previous song
 exit: disconnect from server
+
+
+Video demo: https://www.youtube.com/watch?v=hpbEcW-NwCk
